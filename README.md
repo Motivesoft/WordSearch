@@ -17,11 +17,12 @@ Example word lists include the following:
   * North-American word list, [NWL2020](https://github.com/scrabblewords/scrabblewords/blob/main/words/North-American/NSWL2020.txt)
   * North-American word list filtered for certain inappropriate words, [NSWL2020](https://github.com/scrabblewords/scrabblewords/blob/main/words/North-American/NSWL2020.txt)
 * The ```words``` dictionary available as a Linux package that installs into ```/etc/share/dict``` or ```/etc/dict```
-* [English Words](https://github.com/dwyl/english-words)
-  * e.g. [words_alpha](https://github.com/dwyl/english-words/blob/master/words_alpha.txt) 
-* [Norvig](https://norvig.com/ngrams/enable1.txt)
+* [English Words](https://github.com/dwyl/english-words), e.g.
+  * [words_alpha](https://github.com/dwyl/english-words/bob/master/words_alpha.txt) 
+* [Natural Language Corpus Data](https://norvig.com/ngrams/)
+  * e.g. The [ENABLE](https://norvig.com/ngrams/enable1.txt) list
 
-__IMPORTANT NOTE:__ The list above may include files that are not public domain. Permission should be sought from their owner before use or redistribution.
+__IMPORTANT NOTE:__ The list above may include files that are not public domain. Permission should be sought from their owner before use or redistribution unless its license information is readily available.
 
 __Do not commit a word list to this project unless its provenance is known and there is permission to do so.__
 
