@@ -7,10 +7,10 @@ namespace WordSearch
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("WordSearch");
-
             if (args.Length == 0)
             {
+                Console.WriteLine("WordSearch");
+
                 Console.WriteLine();
                 Console.WriteLine("Usage:");
                 Console.WriteLine("    WordSearch [regex]");
@@ -18,7 +18,7 @@ namespace WordSearch
                 return;
             }
 
-            String fileName = @"words_alpha.txt";
+            String fileName = @"NWL2020.txt";
 
             const Int32 BufferSize = 128;
             using (var fileStream = File.OpenRead(fileName))
@@ -28,11 +28,15 @@ namespace WordSearch
                 String? line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
-                    // Process line
-                    if (Regex.Match(line, args[0]).Success)
+                    // Some lists, like the NWL Scrabble word lists, have the word and its definition on the same line
+                    // Split the word out
+                    String word = line.Split(' ')[0];
+
+                    // Test word (case insensitively)
+                    if (Regex.Match(word, args[0], RegexOptions.IgnoreCase).Success)
                     {
                         found = true;
-                        Console.WriteLine(line);
+                        Console.WriteLine(word);
                     }
                 }
 
