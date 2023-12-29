@@ -27,6 +27,7 @@ __Do not commit a word list to this project unless its provenance is known and t
 
 ## To Do
 The following additional things could be done to this project:
+* Add an optional (but default) behaviour to treat command line input as all-inclusive - e.g. surround with ```^``` and ```$```
 * Have an option to display both the matching word and its definition (if present)
 * Have an option to provide a word list on the command line
 * Have an inbuilt or file for excluded words (similar to the Squaredle one, in its closure javascript?)
