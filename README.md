@@ -34,6 +34,7 @@ The following additional things could be done to this project:
 * Have an inbuilt or file for excluded words (similar to the Squaredle one?)
 * ~~Have an optional/configurable minimum, maximum or specific length to search for~~
 * ~~Allow the user to specify the letters available for use~~
+* ~~Allow the user to specify letters that must be in the found word~~
 * Show version, ~~command line help~~
 * Build for Linux
 * Rebuild in C++

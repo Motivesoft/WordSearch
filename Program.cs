@@ -9,6 +9,7 @@ namespace WordSearch
         {
             String pattern = "";
             String alphabet = "";
+            String musts = "";
             bool showhelp = false;
             bool showdefinition = false;
             bool limited = true;
@@ -37,6 +38,10 @@ namespace WordSearch
 
                     case "-a":
                         alphabet = args[++loop];
+                        break;
+
+                    case "-m":
+                        musts = args[++loop];
                         break;
 
                     case "-h":
@@ -68,7 +73,8 @@ namespace WordSearch
                 Console.WriteLine("    -n number    Minimum word length (default 4)");
                 Console.WriteLine("    -x number    Maximum word length (default 20)");
                 Console.WriteLine("    -s number    Required word length - sets minimum and maximum lengths to be the same");
-                Console.WriteLine("    -a letters   Look for words containing only these letters");
+                Console.WriteLine("    -a letters   Look for words made only from this subset of letters");
+                Console.WriteLine("    -m letters   Look for words that definitely containing these letters");
 
                 return;
             }
@@ -125,6 +131,35 @@ namespace WordSearch
                         }
 
                         if ( !valid ) 
+                        {
+                            continue;
+                        }
+                    }
+
+                    // Make sure all of the letters in 'musts' are in the found word
+                    if (!String.IsNullOrEmpty(musts))
+                    {
+                        String mustWorker = musts;
+                        String wordWorker = word;
+                        bool valid = true;
+                        while (!String.IsNullOrEmpty(mustWorker))
+                        {
+                            char letter = mustWorker[0];
+                            int index = wordWorker.IndexOf(letter, StringComparison.InvariantCultureIgnoreCase);
+                            if (index == -1)
+                            {
+                                valid = false;
+                                break;
+                            }
+                            else
+                            {
+                                wordWorker = wordWorker.Remove(index,1);
+                            }
+
+                            mustWorker = mustWorker.Substring(1);
+                        }
+
+                        if (!valid)
                         {
                             continue;
                         }
