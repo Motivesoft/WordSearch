@@ -8,6 +8,7 @@ namespace WordSearch
         static void Main(String[] args)
         {
             String pattern = "";
+            String alphabet = "";
             bool showhelp = false;
             bool showdefinition = false;
             bool limited = true;
@@ -32,6 +33,10 @@ namespace WordSearch
 
                     case "-s":
                         minLength = maxLength = short.Parse(args[++loop]);
+                        break;
+
+                    case "-a":
+                        alphabet = args[++loop];
                         break;
 
                     case "-h":
@@ -63,6 +68,7 @@ namespace WordSearch
                 Console.WriteLine("    -n number    Minimum word length (default 4)");
                 Console.WriteLine("    -x number    Maximum word length (default 20)");
                 Console.WriteLine("    -s number    Required word length - sets minimum and maximum lengths to be the same");
+                Console.WriteLine("    -a letters   Look for words containing only these letters");
 
                 return;
             }
@@ -103,6 +109,25 @@ namespace WordSearch
                     if (word.Length > maxLength)
                     {
                         continue;
+                    }
+
+                    // Allow only a subset of the normal alphabet to allow for excluded letters
+                    if( !String.IsNullOrEmpty(alphabet) )
+                    {
+                        bool valid = true;
+                        foreach( char letter in word )
+                        {
+                            if( !alphabet.Contains(letter,StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                valid = false;
+                                break;
+                            }
+                        }
+
+                        if ( !valid ) 
+                        {
+                            continue;
+                        }
                     }
 
                     // Test word (case insensitively)
