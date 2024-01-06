@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace WordSearch
@@ -12,6 +13,7 @@ namespace WordSearch
             String musts = "";
             bool showhelp = false;
             bool showdefinition = false;
+            bool usebadwords = true;
             bool limited = true;
             short minLength = 4;
             short maxLength = 20;
@@ -52,6 +54,10 @@ namespace WordSearch
                         showdefinition = true;
                         break;
 
+                    case "-e":
+                        usebadwords = false;
+                        break;
+
                     default:
                         pattern = args[loop];
                         break;
@@ -70,6 +76,7 @@ namespace WordSearch
                 Console.WriteLine("    -h           Show this help");
                 Console.WriteLine("    -l           Do not surround the regex with ^ and $ by default");
                 Console.WriteLine("    -d           Show the found words' definitions, if available");
+                Console.WriteLine("    -e           Exclude bad words from the search");
                 Console.WriteLine("    -n number    Minimum word length (default 4)");
                 Console.WriteLine("    -x number    Maximum word length (default 20)");
                 Console.WriteLine("    -s number    Required word length - sets minimum and maximum lengths to be the same");
@@ -94,8 +101,23 @@ namespace WordSearch
             }
 
             String fileName = @"NWL2020.txt";
-
+            String badwordsFileName = @"bad_words.txt";
+            List<String> badwords = new List<String>();
             const Int32 BufferSize = 128;
+
+            if( !usebadwords ) 
+            { 
+                using (var fileStream = File.OpenRead(badwordsFileName))
+                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
+                {
+                    String? line;
+                    while ((line = streamReader.ReadLine()) != null)
+                    {
+                        badwords.Add(line);
+                    }
+                }
+            }
+
             using (var fileStream = File.OpenRead(fileName))
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
             {
@@ -168,6 +190,26 @@ namespace WordSearch
                     // Test word (case insensitively)
                     if (Regex.Match(word, pattern, RegexOptions.IgnoreCase).Success)
                     {
+                        // Make sure this isn't a bad word
+                        bool excluded = false;
+                        if( !usebadwords )
+                        {
+                            // Exclude any matches in the bad words list
+                            foreach( String badword in badwords )
+                            {
+                                if( word.ToLowerInvariant() == badword.ToLowerInvariant() ) 
+                                { 
+                                    excluded = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if( excluded ) 
+                        {
+                            continue;
+                        }
+
                         found = true;
 
                         if( showdefinition)
