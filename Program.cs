@@ -8,7 +8,7 @@ namespace WordSearch
     {
         static void Main(String[] args)
         {
-            String pattern = "";
+            String prototype = "";
             String alphabet = "";
             String musts = "";
             bool showhelp = false;
@@ -59,12 +59,12 @@ namespace WordSearch
                         break;
 
                     default:
-                        pattern = args[loop];
+                        prototype = args[loop];
                         break;
                 };
             }
 
-            if (showhelp || pattern.Length == 0 || minLength < 1 || maxLength < 1)
+            if (showhelp || prototype.Length == 0 || minLength < 1 || maxLength < 1)
             {
                 Console.WriteLine("WordSearch");
 
@@ -88,6 +88,7 @@ namespace WordSearch
 
             // Treat the pattern as matching the whole word by surrounding with ^ and $
             // On by default
+            string pattern = prototype;
             if( limited )
             {
                 if( !pattern.StartsWith('^'))
@@ -226,7 +227,7 @@ namespace WordSearch
                 if (!found)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("No match for: \"" + args[0] + "\"");
+                    Console.WriteLine("No match for: \"" + prototype + "\"");
                 }
             }
         }
