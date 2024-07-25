@@ -15,7 +15,7 @@ namespace WordSearch
             String musts = "";
             bool showhelp = false;
             bool showdefinition = false;
-            bool includebadwords = true;
+            bool excludebadwords = false;
             bool limited = true;
             short minLength = 4;
             short maxLength = 20;
@@ -57,7 +57,7 @@ namespace WordSearch
                         break;
 
                     case "-e":
-                        includebadwords = false;
+                        excludebadwords = true;
                         break;
 
                     default:
@@ -120,7 +120,7 @@ namespace WordSearch
             {
                 String badwordsFileName = files[0];
 
-                if( !includebadwords ) 
+                if( excludebadwords ) 
                 { 
                     using (var fileStream = File.OpenRead(badwordsFileName))
                     using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
@@ -133,7 +133,7 @@ namespace WordSearch
                     }
                 }
             }
-            else if( !includebadwords )
+            else if( excludebadwords )
             {
                 Console.WriteLine("No bad word list (bad*.txt) found");
                 return;
@@ -213,7 +213,7 @@ namespace WordSearch
                     {
                         // Make sure this isn't a bad word
                         bool excluded = false;
-                        if( !includebadwords )
+                        if( excludebadwords )
                         {
                             // Exclude any matches in the bad words list
                             foreach( String badword in badwords )
