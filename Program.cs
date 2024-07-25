@@ -13,7 +13,7 @@ namespace WordSearch
             String musts = "";
             bool showhelp = false;
             bool showdefinition = false;
-            bool usebadwords = true;
+            bool includebadwords = true;
             bool limited = true;
             short minLength = 4;
             short maxLength = 20;
@@ -55,7 +55,7 @@ namespace WordSearch
                         break;
 
                     case "-e":
-                        usebadwords = false;
+                        includebadwords = false;
                         break;
 
                     default:
@@ -101,24 +101,44 @@ namespace WordSearch
                 }
             }
 
-            String fileName = @"NWL2020.txt";
-            String badwordsFileName = @"bad_words.txt";
-            List<String> badwords = new List<String>();
-            const Int32 BufferSize = 128;
+            // Discover which wordlist we have
+            var files = Directory.GetFiles(".", "nwl*.txt");
+            if( files.Length == 0 )
+            {
+                Console.WriteLine("No word list (nwl*.txt) found");
+                return;
+            }
+            String fileName = files[0];
 
-            if( !usebadwords ) 
-            { 
-                using (var fileStream = File.OpenRead(badwordsFileName))
-                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
-                {
-                    String? line;
-                    while ((line = streamReader.ReadLine()) != null)
+            // Discover which bad word list we have, if any
+            List<String> badwords = new List<String>();
+
+            files = Directory.GetFiles(".", "bad*.txt");
+            if( files.Length > 0 )
+            {
+                String badwordsFileName = files[0];
+
+                const Int32 BufferSize = 128;
+
+                if( !includebadwords ) 
+                { 
+                    using (var fileStream = File.OpenRead(badwordsFileName))
+                    using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
                     {
-                        badwords.Add(line);
+                        String? line;
+                        while ((line = streamReader.ReadLine()) != null)
+                        {
+                            badwords.Add(line);
+                        }
                     }
                 }
             }
-
+            else if( !includebadwords )
+            {
+                Console.WriteLine("No bad word list (bad*.txt) found");
+                return;
+            }
+            
             using (var fileStream = File.OpenRead(fileName))
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
             {
@@ -193,7 +213,7 @@ namespace WordSearch
                     {
                         // Make sure this isn't a bad word
                         bool excluded = false;
-                        if( !usebadwords )
+                        if( !includebadwords )
                         {
                             // Exclude any matches in the bad words list
                             foreach( String badword in badwords )
