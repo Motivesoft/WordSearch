@@ -5,6 +5,12 @@ The word match is done case-insensitively against a word list.
 
 It may be advisable to put complex regex searches in quotes to avoid command line processing 
 
+## Build Instructions
+Using the Visual Studio build tools, run the following from from a Developer Command Prompt
+```batch
+msbuild WordSearch.sln /p:Configuration=Release
+```
+
 ## Word Lists
 Any can be used, but the expectation is that the list is plain text with each word as the first item on a line. Additional text on the same line is ignored.
 
