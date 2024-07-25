@@ -6,6 +6,8 @@ namespace WordSearch
 {
     internal class Program
     {
+        const Int32 BufferSize = 128;
+
         static void Main(String[] args)
         {
             String prototype = "";
@@ -117,8 +119,6 @@ namespace WordSearch
             if( files.Length > 0 )
             {
                 String badwordsFileName = files[0];
-
-                const Int32 BufferSize = 128;
 
                 if( !includebadwords ) 
                 { 
